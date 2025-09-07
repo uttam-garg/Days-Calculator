@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Days Calculator</title>
+  <style>
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      background: linear-gradient(120deg, #f8ffae 0%, #43c6ac 100%);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .card {
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(67,198,172,0.15);
+      padding: 40px 28px 28px 28px;
+      width: 360px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -40px; left: -40px;
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+      opacity: 0.12;
+      border-radius: 50%;
+      z-index: 0;
+    }
+    h1 {
+      margin: 0 0 24px 0;
+      color: #191654;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-align: left;
+      z-index: 1;
+      position: relative;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #43c6ac;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+    .inputs {
+      margin-bottom: 18px;
+      z-index: 1;
+      position: relative;
+    }
+    input[type="date"], input[type="number"] {
+      padding: 10px;
+      border: 1px solid #43c6ac;
+      border-radius: 10px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+      background: #f8ffae;
+      color: #191654;
+    }
+    .time-row {
+      display: flex;
+      gap: 8px;
+    }
+    input[type="number"] {
+      width: 50%;
+    }
+    input:focus {
+      border-color: #191654;
+      outline: none;
+    }
+    .button-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    button {
+      background: linear-gradient(90deg, #43c6ac 0%, #191654 100%);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 0;
+      font-size: 1.1rem;
+      width: 100%;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(67,198,172,0.08);
+      transition: background 0.2s;
+      z-index: 1;
+      position: relative;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #191654 0%, #43c6ac 100%);
+    }
+    .reset-btn {
+      background: #f3f4f6;
+      color: #191654;
+      border: 1px solid #e5e7eb;
+      box-shadow: none;
+      font-weight: 500;
+    }
+    .reset-btn:hover {
+      background: #e5e7eb;
+      color: #191654;
+      border: 1px solid #cbd5e1;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 1.15rem;
+      min-height: 28px;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 1px 4px rgba(67,198,172,0.07);
+      z-index: 1;
+      position: relative;
+      text-align: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    #result.future {
+      background: #e0f7fa;
+      color: #191654;
+      border: 2px solid #43c6ac;
+    }
+    #result.past {
+      background: #ffe0e0;
+      color: #b71c1c;
+      border: 2px solid #b71c1c;
+    }
+    #result.now {
+      background: #e0ffe0;
+      color: #388e3c;
+      border: 2px solid #388e3c;
+    }
+    .bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      animation: float 8s infinite ease-in-out alternate;
+    }
+    .bg-circle.one {
+      width: 220px;
+      height: 220px;
+      background: #43c6ac;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+    .bg-circle.two {
+      width: 160px;
+      height: 160px;
+      background: #f8ffae;
+      bottom: 8%;
+      right: 10%;
+      animation-delay: 2s;
+    }
+    .bg-circle.three {
+      width: 100px;
+      height: 100px;
+      background: #191654;
+      top: 70%;
+      left: 60%;
+      animation-delay: 4s;
+    }
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(-30px) scale(1.1); }
+    }
+    @media (max-width: 420px) {
+      .card { width: 98vw; padding: 18px 2vw; }
+      input[type="number"] { width: 48%; }
+      .button-row { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-circle one"></div>
+  <div class="bg-circle two"></div>
+  <div class="bg-circle three"></div>
+  <div class="card">
+    <h1>Days Calculator</h1>
+    <div class="inputs">
+      <label>Date (DD/MM/YYYY)</label>
+      <div class="time-row">
+        <input type="number" id="dayInput" min="1" max="31" placeholder="Day">
+        <input type="number" id="monthInput" min="1" max="12" placeholder="Month">
+        <input type="number" id="yearInput" min="1900" max="2100" placeholder="Year">
+      </div>
+      <div class="time-row">
+        <div style="width:50%">
+          <label for="hourInput">Hour</label>
+          <input type="number" id="hourInput" min="0" max="23" placeholder="Hour">
+        </div>
+        <div style="width:50%">
+          <label for="minuteInput">Minute</label>
+          <input type="number" id="minuteInput" min="0" max="59" placeholder="Minute">
+        </div>
+      </div>
+    </div>
+    <div class="button-row">
+      <button onclick="calculateDays()">Calculate</button>
+      <button onclick="resetForm()" class="reset-btn">Reset</button>
+    </div>
+    <div id="result"></div>
+  </div>
+  <script>
+    function calculateDays() {
+      const dayVal = document.getElementById('dayInput').value;
+      const monthVal = document.getElementById('monthInput').value;
+      const yearVal = document.getElementById('yearInput').value;
+      const hourVal = document.getElementById('hourInput').value;
+      const minuteVal = document.getElementById('minuteInput').value;
+      const resultDiv = document.getElementById('result');
+
+      if (!dayVal || !monthVal || !yearVal) {
+        resultDiv.textContent = "Please enter day, month, and year.";
+        resultDiv.className = "";
+        return;
+      }
+
+      const day = parseInt(dayVal, 10);
+      const month = parseInt(monthVal, 10) - 1; // JS months are 0-based
+      const year = parseInt(yearVal, 10);
+      const hour = hourVal === "" ? 0 : parseInt(hourVal, 10);
+      const minute = minuteVal === "" ? 0 : parseInt(minuteVal, 10);
+
+      // Validate date
+      const selectedDate = new Date(year, month, day, hour, minute, 0, 0);
+      if (selectedDate.getDate() !== day || selectedDate.getMonth() !== month || selectedDate.getFullYear() !== year) {
+        resultDiv.textContent = "Invalid date entered.";
+        resultDiv.className = "";
+        return;
+      }
+
+      const now = new Date();
+      const diffMs = selectedDate - now;
+      const absDiffMs = Math.abs(diffMs);
+
+      const days = Math.floor(absDiffMs / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((absDiffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((absDiffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      let msg = "";
+      if (diffMs === 0) {
+        msg = "Selected date and time is now.";
+        resultDiv.className = "now";
+      } else if (diffMs > 0) {
+        if (days > 365) {
+          const years = Math.floor(days / 365);
+          const remDays = days % 365;
+          msg = `In ${years} year(s), ${remDays} day(s), ${hours} hour(s), and ${minutes} minute(s).`;
+        } else {
+          msg = `In ${days} day(s), ${hours} hour(s), and ${minutes} minute(s).`;
+        }
+        resultDiv.className = "future";
+      } else {
+        if (days > 365) {
+          const years = Math.floor(days / 365);
+          const remDays = days % 365;
+          msg = `${years} year(s), ${remDays} day(s), ${hours} hour(s), and ${minutes} minute(s) ago.`;
+        } else {
+          msg = `${days} day(s), ${hours} hour(s), and ${minutes} minute(s) ago.`;
+        }
+        resultDiv.className = "past";
+      }
+
+      resultDiv.textContent = msg;
+    }
+
+    function resetForm() {
+      document.getElementById('dayInput').value = "";
+      document.getElementById('monthInput').value = "";
+      document.getElementById('yearInput').value = "";
+      document.getElementById('hourInput').value = "";
+      document.getElementById('minuteInput').value = "";
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = "";
+      resultDiv.className = "";
+    }
+  </script>
+</body>
+</html>
